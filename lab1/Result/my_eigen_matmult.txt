@@ -1,0 +1,63 @@
+Dimension of the matrix: 5
+
+real	0m0,001s
+user	0m0,001s
+sys	0m0,000s
+Dimension of the matrix: 10
+
+real	0m0,001s
+user	0m0,001s
+sys	0m0,000s
+Dimension of the matrix: 50
+
+real	0m0,004s
+user	0m0,004s
+sys	0m0,000s
+Dimension of the matrix: 100
+
+real	0m0,016s
+user	0m0,016s
+sys	0m0,000s
+Dimension of the matrix: 500
+
+real	0m0,962s
+user	0m0,962s
+sys	0m0,000s
+Dimension of the matrix: 1000
+
+real	0m7,523s
+user	0m7,511s
+sys	0m0,012s
+
+
+--------------------- O2 ----------------------------
+Dimension of the matrix: 5
+
+real	0m0,001s
+user	0m0,001s
+sys	0m0,000s
+Dimension of the matrix: 10
+
+real	0m0,002s
+user	0m0,001s
+sys	0m0,000s
+Dimension of the matrix: 50
+
+real	0m0,001s
+user	0m0,001s
+sys	0m0,000s
+Dimension of the matrix: 100
+
+real	0m0,002s
+user	0m0,002s
+sys	0m0,000s
+Dimension of the matrix: 500
+
+real	0m0,024s
+user	0m0,020s
+sys	0m0,004s
+Dimension of the matrix: 1000
+
+real	0m0,155s
+user	0m0,147s
+sys	0m0,008s

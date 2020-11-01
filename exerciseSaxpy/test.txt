@@ -1,0 +1,3 @@
+N max: 6667  N min: 6667   N:6667threads, time (ms)
+1, 68841
+2, 80728
