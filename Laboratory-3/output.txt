@@ -77,3 +77,157 @@ Time thread 7: 45539480584
 0.785398
 For 4294967295, pi value: 3.141592653822623882170723120823345
 Time: 46631898976
+
+
+
+--------------------------------COMPLETO-----------------------
+Sequential N = 16
+3.079153394197426161270465024909585 5350
+Sequential N = 128
+3.133780272789989534730032556387157 13120
+Sequential N = 1024
+3.140616091322623604561564179804214 88471
+Sequential N = 1048576
+3.141591699915476832429483817776321 85710355
+Sequential N = 4294967295
+3.141592653822623882170723120825823 364898706135
+Parallel N = 4294967295 threads = 1
+Time thread 0: 364720957366
+0.785398
+For 4294967295, pi value: 3.141592653822623882170723120825823
+Time: 364721075947
+Parallel N = 4294967295 threads = 2
+Time thread 0: 175066122441
+Time thread 1: 184337379676
+0.785398
+For 4294967295, pi value: 3.141592653822623882170723120830263
+Time: 184337482417
+Parallel N = 4294967295 threads = 4
+Time thread 0: 87556340949
+Time thread 1: 84325606494
+Time thread 2: 92847704172
+Time thread 3: 91420809900
+0.785398
+For 4294967295, pi value: 3.141592653822623882170723120824546
+Time: 92847932553
+Parallel N = 4294967295 threads = 8
+Time thread 0: 43774303873
+Time thread 1: 42178989487
+Time thread 2: 42058455682
+Time thread 3: 42254107914
+Time thread 4: 46588319933
+Time thread 5: 46336798454
+Time thread 6: 45913546364
+Time thread 7: 45568153734
+0.785398
+For 4294967295, pi value: 3.141592653822623882170723120823345
+Time: 46588557744
+Parallel N = 4294967295 threads = 16
+Time thread 0: 21885810595
+Time thread 1: 21095648445
+Time thread 2: 21055663651
+Time thread 3: 21135638009
+Time thread 4: 21037135837
+Time thread 5: 21078194269
+Time thread 6: 21118888099
+Time thread 7: 21141397676
+Time thread 8: 23338366050
+Time thread 9: 23321856092
+Time thread 10: 23192446703
+Time thread 11: 23125348743
+Time thread 12: 23034245854
+Time thread 13: 22929491040
+Time thread 14: 22827911472
+Time thread 15: 22767177716
+0.785398
+For 4294967295, pi value: 3.14159265382262388217072312082344
+Time: 23338696273
+failed to get cpuid string for PMU hisi_sccl1_l3c14
+failed to get cpuid string for PMU hisi_sccl7_l3c23
+failed to get cpuid string for PMU hisi_sccl5_l3c30
+failed to get cpuid string for PMU hisi_sccl3_l3c6
+failed to get cpuid string for PMU hisi_sccl1_l3c15
+failed to get cpuid string for PMU hisi_sccl5_l3c31
+failed to get cpuid string for PMU hisi_sccl7_l3c22
+failed to get cpuid string for PMU hisi_sccl3_l3c7
+Time thread 0: 87536190161
+Time thread 1: 84339853363
+Time thread 2: 92810347319
+Time thread 3: 91498032885
+0.785398
+For 4294967295, pi value: 3.141592653822623882170723120824546
+Time: 92810595832
+
+ Performance counter stats for './pi_taylor_parallel 4294967295 4':
+
+         356167.94 msec task-clock:u              #    3.837 CPUs utilized          
+                 0      context-switches:u        #    0.000 K/sec                  
+                 0      cpu-migrations:u          #    0.000 K/sec                  
+               200      page-faults:u             #    0.001 K/sec                  
+      925728899676      cycles:u                  #    2.599 GHz                    
+     1664070707605      instructions:u            #    1.80  insn per cycle         
+   <not supported>      branches:u                                                  
+        2663480362      branch-misses:u                                             
+
+      92.813362525 seconds time elapsed
+
+     356.158559000 seconds user
+       0.009999000 seconds sys
+
+
+failed to get cpuid string for PMU hisi_sccl1_l3c14
+failed to get cpuid string for PMU hisi_sccl7_l3c23
+failed to get cpuid string for PMU hisi_sccl5_l3c30
+failed to get cpuid string for PMU hisi_sccl3_l3c6
+failed to get cpuid string for PMU hisi_sccl1_l3c15
+failed to get cpuid string for PMU hisi_sccl5_l3c31
+failed to get cpuid string for PMU hisi_sccl7_l3c22
+failed to get cpuid string for PMU hisi_sccl3_l3c7
+Time thread 0: 43773466845
+Time thread 1: 42176022392
+Time thread 2: 42100277221
+Time thread 3: 42255943448
+Time thread 4: 46631638854
+Time thread 5: 46359136671
+Time thread 6: 45889557374
+Time thread 7: 45539480584
+0.785398
+For 4294967295, pi value: 3.141592653822623882170723120823345
+Time: 46631898976
+
+ Performance counter stats for './pi_taylor_parallel 4294967295 8':
+
+         354705.57 msec task-clock:u              #    7.606 CPUs utilized          
+                 0      context-switches:u        #    0.000 K/sec                  
+                 0      cpu-migrations:u          #    0.000 K/sec                  
+               243      page-faults:u             #    0.001 K/sec                  
+      921946560861      cycles:u                  #    2.599 GHz                    
+     1647964614799      instructions:u            #    1.79  insn per cycle         
+   <not supported>      branches:u                                                  
+        2763484787      branch-misses:u                                             
+
+      46.635011752 seconds time elapsed
+
+     354.706194000 seconds user
+       0.000000000 seconds sys
+
+---------------------------------------
+PERF de Sequential
+
+3.141592653822623882170723120825823 365055787639
+
+ Performance counter stats for './pi_taylor_sequential 4294967295':
+
+         365053.98 msec task-clock:u              #    1.000 CPUs utilized          
+                 0      context-switches:u        #    0.000 K/sec                  
+                 0      cpu-migrations:u          #    0.000 K/sec                  
+                71      page-faults:u             #    0.000 K/sec                  
+      948892883067      cycles:u                  #    2.599 GHz                    
+     1760707418158      instructions:u            #    1.86  insn per cycle         
+   <not supported>      branches:u                                                  
+        1986217214      branch-misses:u                                             
+
+     365.058523722 seconds time elapsed
+
+     365.054309000 seconds user
+       0.000000000 seconds sys
