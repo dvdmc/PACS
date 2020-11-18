@@ -53,6 +53,8 @@ int main(int argc, char const *argv[])
     time_t mult_time_s = t2.tv_sec - t1.tv_sec;
     suseconds_t mult_time_us = t2.tv_usec - t1.tv_usec;
 
+    cout << t0.tv_usec << ", " << t1.tv_usec << ", " << t2.tv_usec << ", " <<t3.tv_usec << ", "<<endl;
+
     cout << "ps " << program_time_s << "pus " << program_time_us << endl;
     cout << "ms " << mult_time_s << "mus " << mult_time_us << endl;
 
