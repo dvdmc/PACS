@@ -262,3 +262,51 @@ Time thread 3: 135254661889
 For 4294967295, pi value: 3.141592653822623882170723120819495
 Time: 157952106307
 
+
+-------------------------------------
+BETA QUESTION
+
+Time thread 0: 13161484
+Time thread 1: 8614640
+Time thread 2: 10152232
+Time thread 3: 8321883
+0.785397
+For 1048576, pi value: 3.141591699915476875
+Time: 13347845
+
+
+Time thread 0: 954942
+Time thread 1: 797784
+Time thread 2: 1010547
+Time thread 3: 819608
+Time thread 4: 845697
+Time thread 5: 953515
+Time thread 6: 888915
+Time thread 7: 1838956
+Time thread 8: 922546
+Time thread 9: 2156229
+Time thread 10: 1000226
+Time thread 11: 988430
+Time thread 12: 945212
+Time thread 13: 1023755
+Time thread 14: 817886
+Time thread 15: 858356
+Time thread 16: 999872
+Time thread 17: 1019664
+Time thread 18: 1006595
+Time thread 19: 655909
+Time thread 20: 763912
+Time thread 21: 957795
+Time thread 22: 882044
+Time thread 23: 1004889
+Time thread 24: 901983
+Time thread 25: 3942410
+Time thread 26: 1013257
+Time thread 27: 889027
+Time thread 28: 851558
+Time thread 29: 1005174
+Time thread 30: 1008855
+Time thread 31: 947682
+0.785391
+For 1048576, pi value: 3.141591699915476853
+Time: 11300606
