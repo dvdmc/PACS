@@ -14,11 +14,11 @@ void pi_taylor_chunk(std::vector<my_float> &output, std::vector<std::chrono::nan
     auto start = std::chrono::steady_clock::now();
     my_float sum = 0;
     int num = 1;
-    int den;
+    my_float den;
     for (size_t i = start_step; i < stop_step; i++)
     {
         den = 2 * i + 1;
-        sum += num / (my_float)den;
+        sum += num / den;
         num = -num;
     }
     output[thread_id] = sum;
@@ -83,7 +83,7 @@ int main(int argc, const char *argv[])
     auto ret_pair = usage(argc, argv);
     auto steps = ret_pair.first;
     auto threads = ret_pair.second;
-    my_float pi;
+    my_float pi = 0;
     
     std::vector<my_float> results(threads);
     std::vector<std::chrono::nanoseconds> time_thread(threads);
@@ -106,11 +106,12 @@ int main(int argc, const char *argv[])
 
     std::chrono::nanoseconds time = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start);
 
-    for (unsigned int i = 0; i < threads; i++){
+    for (size_t i = 0; i < threads; i++){
         pi += results[i];
         std::cout << "Time thread " << i << ": " << time_thread[i].count() << std::endl;
     }
     pi *= 4;
+    std::cout << results[0] << std::endl;
 
     std::cout << "For " << steps << ", pi value: "
                 << std::setprecision(std::numeric_limits<long double>::digits10 + 1)

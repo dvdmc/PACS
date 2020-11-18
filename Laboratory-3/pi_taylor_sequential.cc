@@ -10,10 +10,10 @@ using my_float = long double;
 my_float pi_taylor(size_t steps) {
     my_float sum = 0;
     int num = 1;
-    int den;
-    for (unsigned int i = 0; i < steps; i++){
+    my_float den;
+    for (size_t i = 0; i < steps; i++){
         den = 2 * i + 1;
-        sum += num/(my_float)den;
+        sum += num/den;
         num = -num;
     }
     return 4 * sum;
