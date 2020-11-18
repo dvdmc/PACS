@@ -9,19 +9,28 @@
 
 using my_float = long double;
 
+void KahanSum (const my_float n, my_float& c, my_float& sum){
+    my_float y = n - c;
+    my_float t = sum + y;
+    c = (t - sum) - y;
+    sum = t;
+}
+
 void pi_taylor_chunk(std::vector<my_float> &output, std::vector<std::chrono::nanoseconds> &time_thread,
-                     size_t thread_id, size_t start_step, size_t stop_step){
+                     size_t thread_id, size_t start_step, size_t stop_step, std::vector<my_float> &c_vector){
     auto start = std::chrono::steady_clock::now();
     my_float sum = 0;
+    my_float c = 0.0f;
     int num = 1;
     my_float den;
     for (size_t i = start_step; i < stop_step; i++)
     {
         den = 2 * i + 1;
-        sum += num / (my_float)den;
+        KahanSum(num/den, c, sum);
         num = -num;
     }
     output[thread_id] = sum;
+    c_vector[thread_id] = c;
     auto stop = std::chrono::steady_clock::now();
     time_thread[thread_id] = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start);
 }
@@ -77,18 +86,6 @@ get_chunk_begin_end(const chunk_info& ci, size_t index)
     return std::make_pair(begin, end);
 }
 
-my_float KahanSum (std::vector<my_float>& results){
-    my_float sum = 0.0f;
-    my_float c = 0.0f;
-    for (std::vector<my_float>::iterator i = results.begin(); i != results.end(); i++){
-        my_float y = *i - c;
-        my_float t = sum + y;
-        c = (t - sum) - y;
-        sum = t;
-    }
-    return sum;
-}
-
 int main(int argc, const char *argv[])
 {
 
@@ -98,6 +95,7 @@ int main(int argc, const char *argv[])
     my_float pi = 0;
     
     std::vector<my_float> results(threads);
+    std::vector<my_float> c_vector(threads);
     std::vector<std::chrono::nanoseconds> time_thread(threads);
     std::vector<std::thread> thread_vector;
     auto chunks = split_evenly(steps, threads);
@@ -106,7 +104,7 @@ int main(int argc, const char *argv[])
     for(size_t i = 0; i < threads; ++i) {
         auto begin_end = get_chunk_begin_end(chunks, i);
         thread_vector.push_back(std::thread(pi_taylor_chunk, ref(results), ref(time_thread), i, 
-                                            begin_end.first, begin_end.second));
+                                            begin_end.first, begin_end.second, ref(c_vector)));
     }
 
     // wait for completion
@@ -118,12 +116,21 @@ int main(int argc, const char *argv[])
 
     std::chrono::nanoseconds time = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start);
 
-    pi = KahanSum(results);
+    my_float c = 0.0f;
+    my_float cOfc = 0.0f;
+
+    for (std::vector<my_float>::iterator i = c_vector.begin(); i!=c_vector.end(); i++){
+        KahanSum(*i, cOfc, c);
+    }
+
+    for (std::vector<my_float>::iterator i = results.begin(); i!=results.end(); i++){
+        KahanSum(*i, c, pi);
+    }
+    pi *= 4;
 
     for (size_t i = 0; i < threads; i++){
         std::cout << "Time thread " << i << ": " << time_thread[i].count() << std::endl;
     }
-    pi *= 4;
 
     std::cout << "For " << steps << ", pi value: "
                 << std::setprecision(std::numeric_limits<long double>::digits10 + 1)

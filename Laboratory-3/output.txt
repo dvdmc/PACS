@@ -193,7 +193,7 @@ Time thread 6: 45889557374
 Time thread 7: 45539480584
 0.785398
 For 4294967295, pi value: 3.141592653822623882170723120823345
-Time: 46631898976
+Time: 46631898976     
 
  Performance counter stats for './pi_taylor_parallel 4294967295 8':
 
@@ -231,3 +231,34 @@ PERF de Sequential
 
      365.054309000 seconds user
        0.000000000 seconds sys
+
+-------------------------------------------------------------------------------
+KAHNAN
+
+Time thread 0: 20661978639
+Time thread 1: 20661557206
+Time thread 2: 20662251181
+Time thread 3: 20661850038
+For 4294967295, pi value: 3.1415927410125732421875  
+Time: 20662423323
+
+
+PARALLEL
+
+Time thread 0: 6197777143
+Time thread 1: 6197509781
+Time thread 2: 6197689852
+Time thread 3: 6197563491
+0.785399
+For 4294967295, pi value: 3.14159679412841796875
+Time: 6197865334
+
+KAHNAN long double
+
+Time thread 0: 157952016977
+Time thread 1: 126682401109
+Time thread 2: 136619151577
+Time thread 3: 135254661889
+For 4294967295, pi value: 3.141592653822623882170723120819495
+Time: 157952106307
+
