@@ -142,73 +142,49 @@ Time thread 15: 22767177716
 0.785398
 For 4294967295, pi value: 3.14159265382262388217072312082344
 Time: 23338696273
-failed to get cpuid string for PMU hisi_sccl1_l3c14
-failed to get cpuid string for PMU hisi_sccl7_l3c23
-failed to get cpuid string for PMU hisi_sccl5_l3c30
-failed to get cpuid string for PMU hisi_sccl3_l3c6
-failed to get cpuid string for PMU hisi_sccl1_l3c15
-failed to get cpuid string for PMU hisi_sccl5_l3c31
-failed to get cpuid string for PMU hisi_sccl7_l3c22
-failed to get cpuid string for PMU hisi_sccl3_l3c7
-Time thread 0: 87536190161
-Time thread 1: 84339853363
-Time thread 2: 92810347319
-Time thread 3: 91498032885
-0.785398
+
+
+--------------------------------------------------------------------------------------------
+PERF 4 threads
+
 For 4294967295, pi value: 3.141592653822623882170723120824546
-Time: 92810595832
+Time: 92786174833
 
  Performance counter stats for './pi_taylor_parallel 4294967295 4':
 
-         356167.94 msec task-clock:u              #    3.837 CPUs utilized          
+         355681.53 msec task-clock:u              #    3.833 CPUs utilized          
                  0      context-switches:u        #    0.000 K/sec                  
                  0      cpu-migrations:u          #    0.000 K/sec                  
-               200      page-faults:u             #    0.001 K/sec                  
-      925728899676      cycles:u                  #    2.599 GHz                    
-     1664070707605      instructions:u            #    1.80  insn per cycle         
+               159      page-faults:u             #    0.000 K/sec                  
+      924461383826      cycles:u                  #    2.599 GHz                    
+     1664070694298      instructions:u            #    1.80  insn per cycle         
    <not supported>      branches:u                                                  
-        2663480362      branch-misses:u                                             
+        2672502994      branch-misses:u                                             
 
-      92.813362525 seconds time elapsed
+      92.800398502 seconds time elapsed
 
-     356.158559000 seconds user
+     355.671780000 seconds user
        0.009999000 seconds sys
+------------------------------------------------------------------------------------
+PERF 8 threads
 
-
-failed to get cpuid string for PMU hisi_sccl1_l3c14
-failed to get cpuid string for PMU hisi_sccl7_l3c23
-failed to get cpuid string for PMU hisi_sccl5_l3c30
-failed to get cpuid string for PMU hisi_sccl3_l3c6
-failed to get cpuid string for PMU hisi_sccl1_l3c15
-failed to get cpuid string for PMU hisi_sccl5_l3c31
-failed to get cpuid string for PMU hisi_sccl7_l3c22
-failed to get cpuid string for PMU hisi_sccl3_l3c7
-Time thread 0: 43773466845
-Time thread 1: 42176022392
-Time thread 2: 42100277221
-Time thread 3: 42255943448
-Time thread 4: 46631638854
-Time thread 5: 46359136671
-Time thread 6: 45889557374
-Time thread 7: 45539480584
-0.785398
 For 4294967295, pi value: 3.141592653822623882170723120823345
-Time: 46631898976     
+Time: 46527485283
 
  Performance counter stats for './pi_taylor_parallel 4294967295 8':
 
-         354705.57 msec task-clock:u              #    7.606 CPUs utilized          
+         353966.19 msec task-clock:u              #    7.607 CPUs utilized          
                  0      context-switches:u        #    0.000 K/sec                  
                  0      cpu-migrations:u          #    0.000 K/sec                  
-               243      page-faults:u             #    0.001 K/sec                  
-      921946560861      cycles:u                  #    2.599 GHz                    
-     1647964614799      instructions:u            #    1.79  insn per cycle         
+               180      page-faults:u             #    0.001 K/sec                  
+      920017403076      cycles:u                  #    2.599 GHz                    
+     1647964591190      instructions:u            #    1.79  insn per cycle         
    <not supported>      branches:u                                                  
-        2763484787      branch-misses:u                                             
+        2764194360      branch-misses:u                                             
 
-      46.635011752 seconds time elapsed
+      46.530754398 seconds time elapsed
 
-     354.706194000 seconds user
+     353.966896000 seconds user
        0.000000000 seconds sys
 
 ---------------------------------------
@@ -260,6 +236,7 @@ Time thread 1: 126682401109
 Time thread 2: 136619151577
 Time thread 3: 135254661889
 For 4294967295, pi value: 3.141592653822623882170723120819495
+                          
 Time: 157952106307
 
 
