@@ -1,3 +1,10 @@
+/*
+ * File: pi_taylor_parallel_kahan.cc
+ * Authors: David Morilla Cabello       822899
+ *          Diego Martínez Baselga      735969
+ * 
+ */
+
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -6,12 +13,15 @@
 #include <thread>
 #include <utility>
 #include <vector>
+#include <sys/time.h>
 
 using my_float = long double;
 
-void pi_taylor_chunk(std::vector<my_float> &output, //std::vector<std::chrono::nanoseconds> &time_thread,
-                     size_t thread_id, size_t start_step, size_t stop_step){
-    //auto start = std::chrono::steady_clock::now();
+void pi_taylor_chunk(std::vector<my_float> &output, std::vector<std::chrono::nanoseconds> &time_thread,
+                     size_t thread_id, size_t start_step, size_t stop_step, 
+                     std::vector<std::pair<timeval, timeval>> &timestamps){
+    gettimeofday(&timestamps[thread_id].first, NULL);
+    auto start = std::chrono::steady_clock::now();
     my_float sum = 0;
     int num = 1;
     my_float den;
@@ -22,8 +32,9 @@ void pi_taylor_chunk(std::vector<my_float> &output, //std::vector<std::chrono::n
         num = -num;
     }
     output[thread_id] = sum;
-    //auto stop = std::chrono::steady_clock::now();
-    //time_thread[thread_id] = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start);
+    auto stop = std::chrono::steady_clock::now();
+    time_thread[thread_id] = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start);
+    gettimeofday(&timestamps[thread_id].second, NULL);
 }
 
 std::pair<size_t, size_t>
@@ -86,15 +97,16 @@ int main(int argc, const char *argv[])
     my_float pi = 0;
     
     std::vector<my_float> results(threads);
-    //std::vector<std::chrono::nanoseconds> time_thread(threads);
+    std::vector<std::chrono::nanoseconds> time_thread(threads);
+    std::vector<std::pair<timeval, timeval>> timestamps(threads);
     std::vector<std::thread> thread_vector;
     auto chunks = split_evenly(steps, threads);
 
     auto start = std::chrono::steady_clock::now();
     for(size_t i = 0; i < threads; ++i) {
         auto begin_end = get_chunk_begin_end(chunks, i);
-        thread_vector.push_back(std::thread(pi_taylor_chunk, ref(results), //ref(time_thread), 
-                                            i, begin_end.first, begin_end.second));
+        thread_vector.push_back(std::thread(pi_taylor_chunk, ref(results), ref(time_thread), 
+                                            i, begin_end.first, begin_end.second, ref(timestamps)));
     }
 
     // wait for completion
@@ -108,13 +120,15 @@ int main(int argc, const char *argv[])
 
     for (size_t i = 0; i < threads; i++){
         pi += results[i];
-        //std::cout << "Time thread " << i << ": " << time_thread[i].count() << std::endl;
+        std::cout << "Thread " << i << ": " << time_thread[i].count() << ", " <<
+        timestamps[i].first.tv_sec << ", " << timestamps[i].first.tv_usec << ", " <<
+        timestamps[i].second.tv_sec << ", " << timestamps[i].second.tv_usec <<std::endl;
     }
     pi *= 4;
 
-    //std::cout << "For " << steps << ", pi value: "
-    //            << std::setprecision(std::numeric_limits<long double>::digits10 + 1)
-    //            << pi << std::endl;
-    //std::cout << "Time: " << time.count() << std::endl;
+    std::cout << "For " << steps << ", pi value: "
+                << std::setprecision(std::numeric_limits<long double>::digits10 + 1)
+                << pi << std::endl;
+    std::cout << "Time: " << time.count() << std::endl;
     std::cout << time.count() << std::endl;
 }

@@ -1,3 +1,11 @@
+/*
+ * File: pi_taylor_parallel_kahan.cc
+ * Authors: David Morilla Cabello       822899
+ *          Diego Martínez Baselga      735969
+ * 
+ */
+
+
 #include <iomanip>
 #include <iostream>
 #include <limits>

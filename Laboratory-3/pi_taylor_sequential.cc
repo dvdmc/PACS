@@ -1,3 +1,10 @@
+/*
+ * File: pi_taylor_parallel_kahan.cc
+ * Authors: David Morilla Cabello       822899
+ *          Diego Martínez Baselga      735969
+ * 
+ */
+
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -36,4 +43,5 @@ int main(int argc, const char *argv[]) {
 
     std::chrono::nanoseconds time = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start);
     std::cout << std::setprecision(std::numeric_limits<my_float>::digits10 + 1) << pi << " " << time.count() << std::endl;
+    std::cout << steps << " " << time.count() << std::endl;
 }
