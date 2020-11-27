@@ -127,10 +127,12 @@ int main(int argc, const char *argv[])
     my_float c = 0.0f;
     my_float cOfc = 0.0f;
 
+    // Sum the remaining errors.
     for (std::vector<my_float>::iterator i = c_vector.begin(); i!=c_vector.end(); i++){
         KahanSum(*i, cOfc, c);
     }
 
+    // Perform the summation of the different sums using Kahan's summation.
     for (std::vector<my_float>::iterator i = results.begin(); i!=results.end(); i++){
         KahanSum(*i, c, pi);
     }
