@@ -210,7 +210,7 @@ usage(int argc, char *argv[], size_t w, size_t h) {
     }
 
     size_t w_div = argc == 1 ? 2 : std::stol(argv[1]);
-    size_t h_div = argc == 1 ? 2 : std::stol(argv[1]);
+    size_t h_div = argc == 1 ? 2 : std::stol(argv[2]);
 
     if (((w/w_div) < 4) || ((h/h_div) < 4)){
         std::cerr << "The minimum region width and height is 4" << std::endl;
@@ -281,15 +281,10 @@ int main(int argc, char *argv[]){
     auto chunks_w = split_evenly(w, w_div);
     auto chunks_h = split_evenly(h, h_div);
 
-    auto begin_end_w = get_chunk_begin_end(chunks_w, 0);
-    auto begin_end_h = get_chunk_begin_end(chunks_h, 0);
-    Region reg(begin_end_w.first, begin_end_w.second, begin_end_h.first, begin_end_h.second);
-    pool->submit([=]{ render(w, h, samps, cam, cx, cy, c_ptr, reg);});
-
     // launch the tasks
     for(size_t i = 0; i < w_div; ++i) 
     {
-        //auto begin_end_w = get_chunk_begin_end(chunks_w, i);
+        auto begin_end_w = get_chunk_begin_end(chunks_w, i);
         for(size_t j = 0; j < h_div; ++j)
         {
             auto begin_end_h = get_chunk_begin_end(chunks_h, j);
@@ -301,10 +296,10 @@ int main(int argc, char *argv[]){
 
     // wait for completion
     delete pool;
-
     auto stop = std::chrono::steady_clock::now();
-    std::cout << "Execution time: " <<
-    std::chrono::duration_cast<std::chrono::milliseconds>(stop-start).count() << " ms." << std::endl;
+    //std::cout << "Execution time: " <<
+    //std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start).count() << " ms." << std::endl;
+    std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start).count() << std::endl;
 
     write_output_file(c, w, h);
 }
