@@ -44,18 +44,20 @@ class lock_free_queue
             while(!done){
                 tail = this->Tail;
                 std::shared_ptr<node_t> next = tail->next;
-                if (tail == this->Tail){
-                    if (next == nullptr){
-                        if (std::atomic_compare_exchange_weak(&tail->next, &next, node)){ 
+                if (tail == this->Tail){ //Check if other thread has push a node
+                    if (next == nullptr){ //Check if the pointer tail points to the last node (i.e. its next is nullptr)
+                        if (std::atomic_compare_exchange_strong(&tail->next, &next, node)){ 
                             done = true;
                         }
                     }
-                    else{
-                        std::atomic_compare_exchange_weak(&this->Tail, &tail, next);
+                    else
+                    {
+                        //Make this->Tail point to the last element if no other thread has make it before
+                        std::atomic_compare_exchange_strong(&this->Tail, &tail, next);
                     }
                 }
             }
-            std::atomic_compare_exchange_weak(&this->Tail, &tail, node);
+            std::atomic_compare_exchange_strong(&this->Tail, &tail, node);
         }
 
         bool try_pop(T& value)
@@ -69,13 +71,13 @@ class lock_free_queue
                 if (head == this->Head){
                     if (head == tail){
                         if (next == nullptr){
-                            return false;
+                            return false; 
                         }
-                        std::atomic_compare_exchange_weak(&this->Tail, &tail, next);
+                        std::atomic_compare_exchange_strong(&this->Tail, &tail, next);
                     }
                     else{
                         value = next->value;
-                        if (std::atomic_compare_exchange_weak(&this->Head, &head, next)){
+                        if (std::atomic_compare_exchange_strong(&this->Head, &head, next)){
                             done = true;
                         }
                     }
@@ -96,7 +98,7 @@ class lock_free_queue
                         if (next == nullptr){
                             return true;
                         }
-                        std::atomic_compare_exchange_weak(&this->Tail, &tail, next);
+                        std::atomic_compare_exchange_strong(&this->Tail, &tail, next);
                     }
                     else{
                         return false;
