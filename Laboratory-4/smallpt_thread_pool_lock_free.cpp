@@ -210,7 +210,7 @@ usage(int argc, char *argv[], size_t w, size_t h) {
     }
 
     size_t w_div = argc == 1 ? 2 : std::stol(argv[1]);
-    size_t h_div = argc == 1 ? 2 : std::stol(argv[1]);
+    size_t h_div = argc == 1 ? 2 : std::stol(argv[2]);
 
     if (((w/w_div) < 4) || ((h/h_div) < 4)){
         std::cerr << "The minimum region width and height is 4" << std::endl;
@@ -278,8 +278,8 @@ int main(int argc, char *argv[]){
     // create a thread pool
     lock_free_thread_pool* pool = new lock_free_thread_pool();
 
-    auto chunks_w = split_evenly(w-1, w_div);
-    auto chunks_h = split_evenly(h-1, h_div);
+    auto chunks_w = split_evenly(w, w_div);
+    auto chunks_h = split_evenly(h, h_div);
 
     auto begin_end_w = get_chunk_begin_end(chunks_w, 0);
     auto begin_end_h = get_chunk_begin_end(chunks_h, 0);
@@ -294,17 +294,12 @@ int main(int argc, char *argv[]){
         {
             auto begin_end_h = get_chunk_begin_end(chunks_h, j);
             Region reg(begin_end_w.first, begin_end_w.second, begin_end_h.first, begin_end_h.second);
-            reg.print();
-            std::cout << "Hola"<<std::endl;
             pool->submit([=]{ render(w, h, samps, cam, cx, cy, c_ptr, reg); });
-            //pool->submit([=]{ std::cout<<"task"<<std::endl; });
         }
     }
 
     // wait for completion
-    std::cout << "Before delete"<<std::endl;
     delete pool;
-    std::cout << "After delete"<<std::endl;
     auto stop = std::chrono::steady_clock::now();
     std::cout << "Execution time: " <<
     std::chrono::duration_cast<std::chrono::milliseconds>(stop-start).count() << " ms." << std::endl;

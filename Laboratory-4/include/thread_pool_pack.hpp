@@ -15,7 +15,7 @@ class thread_pool_pack
   //using task_type = std::function<void()>;
   using my_float = long double;
   using task_type = std::packaged_task<my_float()>;
-  threadsafe_queue_pack<task_type> _queue; //Pregunta: se puede usar directamente threadsafe_queue<task_type> ? Por qué std::function wrapper?
+  threadsafe_queue_pack<task_type> _queue; 
   std::vector<std::thread> thread_vector;
   join_threads _joiner;
 
@@ -39,7 +39,7 @@ class thread_pool_pack
   {
       for (size_t i = 0; i < _n_threads; i++)
       {
-        thread_vector.push_back(std::thread(&thread_pool_pack::worker_thread, this)); //Pregunta: se podría poner directamente worker_thread?
+        thread_vector.push_back(std::thread(&thread_pool_pack::worker_thread, this)); 
       }
   }
 
@@ -57,7 +57,7 @@ class thread_pool_pack
       }
   }
 
-  template<typename F> //Pregunta:POR QUE F Y NO TASK TYPE: sentido de castear la funcion ??
+  template<typename F> 
   void submit(F f)
     {
        _queue.push(std::move(f));

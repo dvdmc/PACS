@@ -108,7 +108,6 @@ int main(int argc, const char *argv[])
 
     // wait for completion
     delete pool;
-    std::cout << "HOLA" << std::endl;
     auto stop = std::chrono::steady_clock::now();
 
     std::chrono::nanoseconds time = std::chrono::duration_cast<std::chrono::nanoseconds>(stop-start);
@@ -118,9 +117,9 @@ int main(int argc, const char *argv[])
     }
     pi *= 4;
 
-    std::cout << "For " << steps << ", pi value: "
+    /*std::cout << "For " << steps << ", pi value: "
                 << std::setprecision(std::numeric_limits<long double>::digits10 + 1)
                 << pi << std::endl;
-    std::cout << "Time: " << time.count() << std::endl;
+    std::cout << "Time: " << time.count() << std::endl;*/
     std::cout << time.count() << std::endl;
 }

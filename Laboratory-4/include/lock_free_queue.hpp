@@ -24,13 +24,6 @@ class lock_free_queue
             this->Head = node;
             this->Tail = node;
         }
-        /*
-        lock_free_queue(const lock_free_queue& other)
-        {
-            // Acquire the mutex from the other queue to safely copy the queue.
-            std::lock_guard<std::mutex> lk(other._mtx);
-            q = other.q;
-        }*/
 
         lock_free_queue& operator=(const lock_free_queue&) = delete;
 
@@ -84,6 +77,58 @@ class lock_free_queue
                 }
             }
             return true;
+        }
+
+
+        std::shared_ptr<T> wait_and_pop()
+        {
+            bool done = false;
+            std::shared_ptr<node_t> head, tail, next;
+            T value;
+            while(!done){
+                head = this->Head;
+                tail = this->Tail;
+                next = head->next;
+                if (head == this->Head){
+                    if (head == tail){
+                        if (next != nullptr){
+                            std::atomic_compare_exchange_strong(&this->Tail, &tail, next);
+                        }  
+                    }
+                    else{
+                        value = next->value;
+                        if (std::atomic_compare_exchange_strong(&this->Head, &head, next)){
+                            done = true;
+                        }
+                    }
+                }
+            }
+            return std::make_shared<T>(value);
+        }
+
+
+        void wait_and_pop(T& value)
+        {
+            bool done = false;
+            std::shared_ptr<node_t> head, tail, next;
+            while(!done){
+                head = this->Head;
+                tail = this->Tail;
+                next = head->next;
+                if (head == this->Head){
+                    if (head == tail){
+                        if (next != nullptr){
+                            std::atomic_compare_exchange_strong(&this->Tail, &tail, next);
+                        }   
+                    }
+                    else{
+                        value = next->value;
+                        if (std::atomic_compare_exchange_strong(&this->Head, &head, next)){
+                            done = true;
+                        }
+                    }
+                }
+            }
         }
 
         bool empty()
