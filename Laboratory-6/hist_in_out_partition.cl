@@ -28,21 +28,20 @@ __kernel void histogram(
   const unsigned int num_groups,
   const unsigned int group_size,
   const unsigned int total_pixels,
+  const unsigned int min,
   __local unsigned int *loc_hist
   ){
-
-  // returns the id for each work item
-  // 0 as the argument as it is a 1 dimensional kernel
 
   unsigned int i = get_local_id(0);
   unsigned int group = get_group_id(0);
 
   if(get_global_id(0) < total_pixels){
-    pair begin_end_group = split_evenly(256, num_groups, group, 0);
+    // Get the pixels that correspond to the work group
+    pair begin_end_group = split_evenly(total_pixels, num_groups, group, 0);
+    // Get the pixels that correspond to the work item
+    pair begin_end_work = split_evenly(begin_end_group.end -  begin_end_group.begin, group_size, i, begin_end_group.begin);
     
-    pair begin_end_work = split_evenly(total_pixels, group_size, i, 0);
-    
-    for (unsigned int bin = i; bin<256*3; bin+=group_size){
+    for (unsigned int bin = i; bin<(256/2)*3; bin+=group_size){
       loc_hist[bin]=0;
     }
     barrier(CLK_LOCAL_MEM_FENCE);
@@ -51,18 +50,16 @@ __kernel void histogram(
       unsigned char red = pixel & 0xFF;
       unsigned char green = (pixel >> 8) & 0xFF;
       unsigned char blue = (pixel >> 16) & 0xFF;
-      if (red >= begin_end_group.begin && red < begin_end_group.end)
-        atomic_add(loc_hist + red, 1);
-      if (green >= begin_end_group.begin && green < begin_end_group.end)
-        atomic_add(loc_hist + 256 + green, 1);
-      if (blue >= begin_end_group.begin && blue < begin_end_group.end)
-        atomic_add(loc_hist + 512 + blue, 1);
+      if (min <= red && red < min+256/2)
+      atomic_add(loc_hist + red - min, 1);
+      if (min <= green && green < min+256/2)
+      atomic_add(loc_hist + 128 + green - min, 1);
+      if (min <= blue && blue < min+256/2)
+      atomic_add(loc_hist + 256 + blue - min, 1);
     }
     barrier(CLK_LOCAL_MEM_FENCE);
-    for (unsigned int bin = i+begin_end_group.begin; bin<begin_end_group.end; bin+=group_size){
-      hist[bin] += loc_hist[bin];
-      hist[bin+256] += loc_hist[bin+256];
-      hist[bin+512] += loc_hist[bin+512];
+    for (unsigned int bin = i; bin<(256/2)*3; bin+=group_size){
+      atomic_add(hist+bin, loc_hist[bin]);
     }
   }
 }
