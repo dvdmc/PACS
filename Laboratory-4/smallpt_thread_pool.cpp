@@ -290,7 +290,6 @@ int main(int argc, char *argv[]){
             auto begin_end_h = get_chunk_begin_end(chunks_h, j);
             Region reg(begin_end_w.first, begin_end_w.second, begin_end_h.first, begin_end_h.second);
             pool->submit([=]{ render(w, h, samps, cam, cx, cy, c_ptr, reg); });
-            //pool->submit([=]{ std::cout<<"task"<<std::endl; });
         }
     }
 
