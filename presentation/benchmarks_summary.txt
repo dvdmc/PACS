@@ -1,0 +1,124 @@
+
+- System Metrics & Benchmarks: 
+
+	- Representative system metrics.
+	- Bibliography: Hennessy and Patterson chapt 1 cover metrics. Ranjani: good descriptions and exercises. DJ Sorin: metrics about variability. Gabriel: performance metrics and benchmarks.
+
+- Lifetime of computer engineering methodology:
+
+1. Application/user demand.
+
+2. It drives to Technology trend.
+
+3. Drives the apepar of newer architectures: more transistors or new hardware architectures.
+
+4. Once it reaches the user or designers, they find the system blottlenecks!!!: In order to obtain them, the propers metrics and benchmarks must be obtained. The metrics are obtained from the benchmarks using profilers. These metrics allow us to answer the question: why a particular architecture is better than others in a particular system or application for specific benchmarks.
+
+## Metrics
+
+### Performance metrics
+
+It means different things for different people. Not all the performance metrics are important for every kind of user and different architectures can optimize different performance metrics. The most important performance factor is time. Different examples are:
+
+- Response time (execution time) for individual users: the system runs an application or a command as fast as possible.
+
+- Throughput (bandwidth) for data center managers: the amount of work that can be done in a time unit. e.g. attend as many querys as possible.
+
+#### Execution time
+
+- Performance is inversely related to execution time: Perf = 1 / Exec time
+
+- If a processor A is n times faster than B, then: Perf A / Perf B = Exec time A / Exec time B = n
+
+- !!!Execution time is time the CPU spends working on the task: it does not include the time waiting for I/O or running other programs!!!: with the time command, the Execution time is the user time. 
+
+- It can be expressed as:
+
+```math
+\text{CPU execution time} = \frac{\text{# CPU clock cycles}}{\text{Clock rate}} = \text{# CPU clock cycles} \times \text{Clock cycle time}
+```
+
+- A clock cycle is the basic unit of time to execute one operation, a pipeline stage (FPGA), etc...
+
+#### Clock rate
+
+The clock rate (clock cycles per secon din MHz or GHz) is inverse of clock cycle time (clock period).
+
+- The higher the clock frequency, the lower the clock cycle. 
+
+TODO: Revise exercise.
+
+**Problem:** The CPU clock cycles have a problem: 
+
+- Not all instructions take the same amount of time to execute.
+
+- Execution time equals the number of instructions multiplied by the average time per instruction.
+
+### Power/Energy metrics
+
+### Dependability metrics
+
+## Benchmarks
+
+They are design for two main purposes:
+
+- Several kind of applications focused on a similar architecture, platform or device. They try to exploit, stress or measure the performance of a specific architecture.
+
+- Set of applications focused on a same field: robotics, vision, medical...
+
+For example:
+
+- Web server: focused on high I/O requirements (transactions, database queries). Hardly any floating point operations.
+
+- Weather Forecasting Simulations: for intensive computing devices focused on very high floating-point performance. Lots of main memory. Number of processors have to match the problem size calculated in order to deliver at least real-time results.
+
+### Class of Applications
+
+- Real application: use the target applciation for the machine on order to evaluate its performance. Best solution if application available. It obtain precise metrics for the application and device. It is not usually the case.
+
+- Modfied application: real application has been modified (slightly instrumented) in order to measure a certain feature. e.g. remove I/O parts of an application in order to focus on the CPU/computationally intensive performance.
+
+- Application kernel: focus on the most time-consuming parts of an application. e.g. extract the matrix-vector multiply of an application, since this uses 80% of the user CPU time.
+
+- Toy benchmarks: very small code segments which produce a predictable result. e.g. quicksort.
+
+- Synthetic benchmarks: try to match the average frequency of operations and operands for a certain probram (simulation). Code does not perform any useful work.
+
+### SPEC Benchmarks
+
+Focus on CPU architectures. It is a consortium of tech companies that publishes benchmarks designed for CPU, Java clients, HPC... The good thing is that they offer the source code instead of offerin only the binaries. A user of the benchmark can analysed the code and test the code with self-compilation.
+
+- The SPECspeed focuses on execution time.
+
+- The SPECCrate focuses on throughput.
+
+
+### Chai Benchmarks
+
+Collaborative Heterogeneous Application for Integrated-architectures.
+
+- The underline device for this benchmark suite is an heterogeneous system: it will be compused of a CPU host and one or multiple devices consisting of: GPU, FPGA, ASIC...
+
+	- It forces a cooperation between the different devices: they try to exploit recent features such as shared virtual memory, coherence, and system-wide atomics.
+
+	- Open-source benchmark implementations in OpenCL, CUDA, and C++ AMP programming models.
+
+- Benchmarks model collaboration patterns:
+	- Data partitioning.
+	- Fine-grain task partitioning.
+	- Coarse-grain task partitioning.
+
+#### Application structure
+
+Coarse-grain task: is divided in different coarse-grain sub-task. These coarse-grain subtasks there are the so called fine-grain tasks: they are completely independent to each other aka can be run simultaneously on different devices/cores. Within the fine-grain tasks there are fine-grain subtasks: they have dependency between them.
+
+Partitioning:
+
+- Data partitioning: there are two devices A and B. The fine grain tasks are divided two to A and three to B. There is no cooperation between devices, there is no overhead. However, when the first grain-coarse subtasks are completed, in order for the second to start, there is a barrier until the tasks are finished. The second coarse-grain subtasks are also divided into device A and B.
+
+- Fine-grain task partitioning: the fine-grain subtasks are assigned to different devices, being dependent on each other. The execution flow is way more complex as, for example, a queue must be used in order to enqueue completed tasks (worker pool). The same barrier is implemented for the coarse-grain subtasks.
+
+- Coarse-grain task partitioning: each of the coarse-grain subtasks are assigned to A or B. If there are not enough resources in A for the subtask, some execution algorithm should be implemented.
+
+The benchmark requires to find ways of different devices in an heterogeneous system to collaborate.
+

@@ -1,0 +1,81 @@
+1. Ejercicios de tonería. Dibujar linea morado, ver cuanto vale un pixel etc...
+
+2. 1er parrafo: leer los pasos y completarlos. clGetPlatformsIDs: numero de plataformas que tenemos. Normalmente se manda el tam maximo del array, los valores y el tam real. Los atributos son nombres reservados. Se itera sobre todas las plataformas y atributos y se pasa la plataforma con el ID, el tipo de atributo, el buffer donde guardar las cosas y el tamaño del buffer. Los tipos de CL se ponen con cl_type. Se itera cogiendo strings excepto el time resolution que devuelve un cl_ulong y está fuera del bucle. La función, si devuelve un error muestra el error si la llamada al device devuelve algo diferente a CL_SUCCESS. 
+
+3. DIFERENCIA ENTRE PLATFORM Y DEVICE: platform es la parte software que recoge los dispositivos "controlados" de la misma forma (CPU, GPU...). Timer resolution devuelve ns. El preferred vector es con qué instrucciones vectorizadas de cada tipo trabaja el device y preferred es el compilador que utilices.
+
+EMPIEZA LO DURO:
+
+						Nombre				Propiedad		Final de vector	
+3. Crear el contexto: pasar las propiedades: (CL_CONTEXT_PLATFORM, (cl_context_properties)platform_ids[0], 0);
+
+				De la plataforma 0
+clCreateContext(properties, n_devices[0], devices_id[0], NULL, NULL, &err);
+						Los ids de la plataforma 0
+
+4. Create a command queue: se crean las propiedades de nuevo: En este caso CL_QUEUE_PROFILING_ENABLE
+
+						Device 0 del platform 0
+clCreateCommandQueueWithProperties( context, devices[0][0], proprt, &err);
+
+KERNEL:
+
+simplemente ...
+
+
+Calcular el tamaño del archivo:
+
+1. FILE pointer: se abre en modo lectura.
+
+2. fseek: coge el archivo, y se mueve hasta el final del archivo (el offset es 0).
+
+3. ftell: devuelve la posicion y eso es el tamaño del archivo en bytes.
+
+4. rewind: devuelve el puntero al inicio.
+
+Leer el kernel source en un buffer.
+
+1. Reservamos memoria suficiente para el archivo.
+
+2. A las cadenas siempre hay que ponerle un \0.
+
+3. Lo lees.
+
+4. Lo cierras.
+
+Crear el programa desde el buffer: el programa se puede pasar el varias líneas pero nosotros lo hemos almacenado y lo pasamos en una línea. Programa = array de lineas (= array de chars).
+
+					Numero de lineas
+1. clCreateProgramWithSource(context, 1(count), inicio de la linea (puntero), tamaño)
+
+Build the executable and check errors:
+
+clBuildProgram( el programa, ni idea...) ???
+
+CREATE KERNEL: a partir del programa y con el mismo nombre que aparece en el archivo.
+
+CREATE BUFFERS IN/OUT.
+
+ESCRIBES EN EL BUFFER LO QUE HAY EN EL VECTOR: SE METE AL COMMAND QUEUE PORQUE ES COMO DEFINIR LA VARIABLE.
+
+SE PASAN LOS ARGUMENTOS DEL KERNEL A LOS BUFFER
+
+
+
+
+kernel
+
+
+NUM_BLOCKS = 32
+NUM_THREADS_PER_BLOCK = 1024
+
+kernel<NUM_BLOCKS,NUM_THEADS_PER_BLOCK>
+
+thread_id = threads.x;
+
+
+
+
+
+
+
